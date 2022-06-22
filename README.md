@@ -26,5 +26,5 @@ bin/console server:run
 
 http://127.0.0.1:8000
  
- **7. To test your front-end application you need to add dummy data in newly created table in steop 4, just add the dummy data and see the results in front-end application (branch: reactjs-front-end)**
+ **7. To test your front-end application you need to add dummy data in newly created table in step 4, just add the dummy data and see the results in front-end application (branch: reactjs-front-end)**
 
