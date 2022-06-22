@@ -1,0 +1,10 @@
+users:
+  path: /api/users
+  defaults: {_controller: 'App\Controller\DefaultController::getUsers'}
+get_user:
+  path: /api/user
+  defaults: {_controller: 'App\Controller\DefaultController::getUserById'}
+
+update_user:
+  path: /api/updateUser
+  defaults: { _controller: 'App\Controller\DefaultController::updateUser' }
