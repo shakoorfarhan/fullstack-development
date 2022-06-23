@@ -10,6 +10,8 @@ function App() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pageNo, setPageNo] = useState(0);
+
   const [csvExport, setCsvExport] = useState({
     data: [],
     headers: [],
@@ -35,7 +37,9 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/users");
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users?pageNo=${pageNo}`
+      );
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
@@ -93,8 +97,6 @@ function App() {
           url: userData.pictureUrl,
         };
       });
-      setUsers(transformedUsers);
-
       setCsvExport({
         data: data,
         headers: headers,
@@ -109,7 +111,39 @@ function App() {
     fetchUsersHandler();
     exportUsersHandler();
   }, [fetchUsersHandler]);
+  const scrollEventHandler = async (e) => {
+    var bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      setPageNo((prevstate) => prevstate + 1);
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users?pageNo=${pageNo + 1}`
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
 
+      const data = await response.json();
+      const transformedUsers = data.map((userData) => {
+        return {
+          id: userData.id,
+          gender: userData.gender,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          title: userData.titleName,
+          street: userData.street,
+          titleName: userData.titleName,
+          city: userData.city,
+          state: userData.state,
+          postalCode: userData.postalCode,
+          email: userData.email,
+          phone: userData.phone,
+          url: userData.pictureUrl,
+        };
+      });
+      setUsers(transformedUsers);
+    }
+  };
   let content = <p>Found no users.</p>;
 
   if (users.length > 0) {
@@ -131,12 +165,16 @@ function App() {
       </Route>
       <Route path="/" exact>
         <section>
-          <CSVLink {...csvExport}>Export to CSV</CSVLink>
+          <CSVLink onClick={exportUsersHandler} {...csvExport}>
+            Export to CSV
+          </CSVLink>
         </section>
-        <section>
-          <button onClick={exportUsersHandler}>Refresh users</button>
+        <section
+          onScroll={scrollEventHandler}
+          style={{ maxHeight: 500, overflow: "auto" }}
+        >
+          {content}
         </section>
-        <section>{content}</section>
       </Route>
     </main>
   );
