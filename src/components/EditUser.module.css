@@ -1,6 +1,5 @@
 .control {
   margin: 1rem 0;
-  margin-left: 40%;
 }
 
 .control label {
@@ -8,18 +7,22 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
   text-align: left;
+  color: wheat;
 }
 
 .control input,
 .control textarea {
   display: block;
-  width: 20%;
+  width: auto;
   font: inherit;
   padding: 0.2rem;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid black;
 }
-
+form{
+  width: 220px;
+  margin: auto;
+}
 .control input:focus,
 .control textarea:focus {
   outline: none;
