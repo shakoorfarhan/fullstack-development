@@ -14,3 +14,5 @@ server url you get in last step mentioned in readme.md file of branch **symfony-
 **3. Start react application** 
 
 Now start react application with command **npm start**. All pages and links will work as expected, the loading can take few seconds due to async calls and the time depends upon your internet speed.
+
+**Note: After editing user you'll be redirected back to home page ('/' path) and you won't see updated changes in the list. So in order to sync these changes press button  'refresh users'**
