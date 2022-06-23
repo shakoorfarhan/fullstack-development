@@ -22,10 +22,26 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstr
      * @Route("/api/users", name="users")
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getUsers(ManagerRegistry $doctrine)
+    public function getUsers(Request $request,ManagerRegistry $doctrine)
     {
         $repository = $doctrine->getRepository(User::class);
-        $users = $repository->findAll();
+        $pNo = $request->query->get('pageNo');
+        $entityManager = $doctrine->getManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('count(u.id)');
+        $qb->from('App:User','u');
+        $count = $qb->getQuery()->getSingleScalarResult();
+        if (is_null($pNo)){
+            $limit = $count;
+            $offset = 0;
+        } else {
+            $limit = 5;
+            $offset = $pNo*2;
+        }
+        if ($offset >= $count){
+            $offset = $count-$limit;
+        }
+        $users = $repository->findBy([], null, $limit, $offset);
         $arr = array();
         foreach ($users as $user){
             $temp = array(
