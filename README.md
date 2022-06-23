@@ -1,4 +1,4 @@
-## Symfony back-end 
+## Symfony back-end (Prerequisites: Symfony 4, Mysql 5.7, PHP 7+) 
 
 Following are the steps to setup this backend in your system:
 
